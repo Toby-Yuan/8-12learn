@@ -25,3 +25,10 @@
 
 // try catch
 // try就像是大型的if篩選, 不通過的會到catch裡面執行
+// 語法
+try{
+
+}
+catch(error){
+    
+}
