@@ -30,5 +30,54 @@ try{
 
 }
 catch(error){
+
+}
+
+// 上課範例
+var mailList = [
+    "jeremy.lin@gmail.com", 
+    "derek.jeter@gmail.com",
+    "chien-ming.wang@gmail.com",
+    undefined,
+    "lionel.messi@gmail.com"
+];
     
+function sendMail(mailAddress) {
+    try {
+        $("#report").append(mailAddress.toString() + "<br>");
+    }
+    catch (e) {
+        $("#report").append(e.message + "<br>");
+    }
+}
+    
+for (i = 0; i < mailList.length; i++) {
+    sendMail(mailList[i]);
+}
+
+// 有問題的在跑一次
+var mailList = [
+    "jeremy.lin@gmail.com", 
+    "derek.jeter@gmail.com",
+    "chien-ming.wang@gmail.com",
+    undefined,
+    "lionel.messi@gmail.com"
+];
+    
+function sendMail(mailAddress) {
+    var errorCount = 0;
+    try {
+        $("#report").append(mailAddress.toString() + "<br>");
+    }
+    catch (e) {
+        errorCount++;
+        $("#report").append(e.message + "<br>");
+    }
+    return errorCount;
+}
+    
+for (i = 0; i < mailList.length; i++) {
+    if (sendMail(mailList[i]) > 0){
+        sendMail(mailList[i]);
+    }
 }
