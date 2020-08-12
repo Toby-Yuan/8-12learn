@@ -85,3 +85,6 @@ for (i = 0; i < mailList.length; i++) {
 // debugger : 終端點
 // 須符合兩個條件: 1.程式內部要有debugger 2.瀏覽頁面要開啟追蹤模式(F12 -> Sources)
 // F12 -> Sources -> Call Stack : 可以看到各個函數的呼叫關係
+
+// console.assert : 若不通過則顯示提示, 但是沒有實質上的制止程式執行
+// 邏輯上會相反, console.assert( 放錯誤的條件, 然後 )
