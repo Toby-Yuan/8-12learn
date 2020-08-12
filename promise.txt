@@ -1,0 +1,127 @@
+// 語法
+function funcNameA (){
+
+    // 呼叫funcNameB
+    // 成功的話執行then 參數是resolve, 失敗則執行catch 參數是reject
+    funcNameB()
+    .then()
+    .catch();
+}
+
+function funcNameB (){
+    return new Promise(resolve,reject);
+}
+
+// 上課範例1
+function longTimeWork(workFine = true, errorMessage = "test") {
+    return new Promise( (resolve, reject) => {
+        setTimeout( () => {
+
+            // 如果workFine是true, 呼叫(回傳)resolve, false則呼叫(回傳)reject, 內容只能一個
+            // 可以回傳任何東西, 陣列, JSON...
+            // let person = [{"name":"Tom","num":10},
+            //            {"name":"Amy","num":20}];
+            // (workFine) ? resolve(person[1].name) : reject(errorMessage);
+            (workFine) ? resolve(200) : reject(errorMessage);
+        }, 1000);
+    })
+}
+
+function usingLongTimeWork() {
+    longTimeWork(true, "test")  // try true/false
+    .then(function (e) {
+        console.log(e);
+    })
+    .catch(function (e) {
+        console.log(e);
+    })
+}
+
+usingLongTimeWork();
+
+
+// 上課範例2
+function longTimeWork(workFine = true, errorMessage = "test") {
+    return new Promise( (resolve, reject) => {
+        setTimeout( () => {
+            (workFine) ? resolve(200) : reject(errorMessage);
+        }, 1000);
+    })
+}
+
+function usingLongTimeWork() {
+    var result = longTimeWork(true, "test");
+    console.log(result);
+}
+
+--> 加上await, 必須加上async
+async function usingLongTimeWork() {
+    var result = await longTimeWork(true, "test");
+    console.log(result);
+}
+
+--> 優化範例1
+async function usingLongTimeWork() {
+
+    // 不管怎樣都會進入try(then), 如果有錯再跳到catch
+    try {
+        var result = await longTimeWork(false, "test");
+        console.log(result);
+    }
+    catch (e) {
+        console.log(e);
+    }
+    
+}
+
+
+
+// 上課範例4,5 : 用JOIN方法縮短時間(用於不相關的兩個被呼叫函式)
+function happy(data, timeCount) {
+    return new Promise( function (resolve, reject) {
+        setTimeout(function () {
+            resolve(data);
+        }, timeCount)
+    })
+}
+
+function sad(data, timeCount) {
+    return new Promise( function (resolve, reject) {
+        setTimeout(function () {
+            resolve(data);
+        }, timeCount)
+    })
+}
+
+// 範例4(串連) : result1(呼叫完) --> result2(呼叫完) --> 相加  2s+3s=5s
+async function living() {
+    var total = 0;
+    var result1 = await happy(200, 2000);
+    console.log(result1);
+    var result2 = await sad(-100, 3000);
+    console.log(result2);
+    total = result1 + result2;
+    console.log("total:", total);
+}
+
+// 範例5(並連) : result1+result2(一起呼叫) --> 相加   3s
+async function living() {
+    var promise1 = happy(200, 2000);
+    var promise2 = sad(-100, 3000);
+    var result1 = await promise1;
+    var result2 = await promise2;
+
+    var total = result1 + result2;
+    console.log("total:", total);
+}
+
+living();
+
+// 上課範例7 : 最終版本
+async function living() {
+    let [result1, result2] = 
+      await Promise.all([happy(200, 2000), sad(-100, 3000)]);
+
+    var total = result1 + result2;
+    console.log("total:", total);
+}
